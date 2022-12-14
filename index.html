@@ -1,0 +1,827 @@
+
+
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>
+    ログイン-MyWaseda
+</title>
+<base href="https://my.waseda.jp:443/" />
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta http-equiv="content-language" content="ja">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+
+<meta http-equiv="Cache-Control" content="no-store,no-cache,must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="-1">
+    <link rel="stylesheet" href="/resource/css/main.css?8e3b9ad1d1ee0b3b9103e2eeffd581e36912deca">
+    <script type="text/javascript" src="/resource/js/ie_ex.js?8e3b9ad1d1ee0b3b9103e2eeffd581e36912deca"></script>
+    <script type="text/javascript" src="/resource/jsLibs/bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="/resource/jsLibs/bower_components/jqueryui/jquery-ui.js"></script>
+    <script type="text/javascript" src="/resource/js/others/sessionValid.js?8e3b9ad1d1ee0b3b9103e2eeffd581e36912deca"></script>
+    <script src="/resource/jsLibs/bower_components/bootstrap-sass-official/assets/javascripts/bootstrap.js"></script>
+    <script src="/resource/jsLibs/bower_components/jasny-bootstrap/js/offcanvas.js"></script>
+    <script src="/resource/js/main.js?8e3b9ad1d1ee0b3b9103e2eeffd581e36912deca"></script>
+    <script type="text/javascript">
+    var appPath="";
+    var fullPath = appPath;
+    $(document).ready(function() {
+      customFormatDate();
+      minHeightAdjust();
+    });
+
+    $(window).resize(function() {
+      minHeightAdjust();
+      });
+
+    function minHeightAdjust(){
+      var tempH = $(window).height();
+      var minH = tempH - 99;
+      $(".login .main-wrapper .main-body").css({'min-height':minH+'px'});
+      }
+  function toDetail(id,language){
+    $("#infoId").val(id);
+    $("#lang").val(language);
+    var obj = document.forms[2];
+    obj.method = "post";
+    obj.action = fullPath + "/login/login!toDetail";
+    obj.submit();
+  }
+
+  function toLogin(){
+       var obj = document.getElementById("loginForm");
+       obj.method = "post";
+       obj.action = "/portal/view/portal-top-view";
+       obj.submit();
+  }
+
+  function languageChange(type){
+     $("[name='selectedLanguageLogin']").attr("value", type);
+     var obj = document.getElementById("languageForm");
+     obj.method = "post";
+     obj.action = fullPath + "/login/login!languageChange";
+     obj.submit();
+  }
+
+  function valid() {
+    getLastUrlData();
+    $("[name='sessionEntry']").val(lastUrl);
+    return true;
+  }
+
+  function doLogin() {
+    valid();
+      var obj = document.getElementById("loginForm");
+      obj.action = "j_security_check";
+      obj.submit();
+    }
+
+  function customFormatDate() {
+      var datefor = $("[custom-date='true']");
+      var length =  datefor.size();
+      var format = 'yy/mm/dd';
+      for(var i = 0; i < length; i++) {
+          var item = datefor.eq(i);
+          var datetemp = new Date(item.text());
+          if(datetemp !== "Invalid Date" && !isNaN(datetemp)) {
+              item.text($.datepicker.formatDate(format, datetemp));
+          }
+      }
+  }
+  sessionStorage.removeItem('windowId');
+  var winID = new Date().getTime();
+  sessionStorage.windowId=winID;
+
+  $(function(){
+	    getLastUrlData();
+	    if(lastUrl!=null && lastUrl!=undefined && window.location.href.indexOf("login") > 0){
+	      window.location.href=lastUrl;
+	    }
+  });
+</script>
+<style type="text/css">
+.login .main-body section.info { margin-bottom: 120px; }
+
+.loginbanner{
+    width:100%;
+    position: absolute;
+    bottom: 0;
+}
+
+.loginbanner p{
+    padding:20px 5px;
+    width:100%;
+    margin:0;
+    height:101px;
+    background:rgba(255,255,255,0.4);
+    border-top: 1px solid rgba(195,198,203,0.6);
+}
+
+.loginbanner .banner{
+    max-width:100%;
+    height:61px;
+    font-weight: bold;
+    cursor: pointer;
+    font: inherit;
+    font-size: 100%;
+    color: #ffffff;
+    vertical-align: middle;
+}
+
+#banner1 {
+    background-color: #209985;
+    border: 1px solid #15663e;
+    box-shadow:1px 1px #5f5f5f;
+}
+
+#banner2 {
+    background-color: #FFFFFF;
+    border: 1px solid #7d3724;
+    box-shadow:1px 1px #5f5f5f;
+    color: #FF2222;
+}
+
+#banner3 {
+    background-color: #FFFFFF;
+    border: 1px solid #7d3724;
+    box-shadow:1px 1px #5f5f5f;
+    color: #FF2222;
+}
+
+#banner4 {
+    background-color: #f98012;
+    border: 1px solid #000;
+    box-shadow: 1px 1px #5f5f5f;
+    color: #f7f7f7;
+}
+
+#banner5 {
+    background-color: #f98012;
+    border: 1px solid #000;
+    box-shadow: 1px 1px #5f5f5f;
+    color: #f7f7f7;
+}
+
+#banner6, #banner7 {
+    background-color: #fff;
+    border: 1px solid #000;
+    box-shadow: 1px 1px #5f5f5f;
+    color: #9b2121;
+}
+</style>
+</head>
+<body class="login">
+<header>
+
+<div data-role="page" id="portal_index_page" class="wrap">
+  <header>
+
+<form id ="languageForm">
+    <section class="header">
+        <h1><img src="/resource/images/logo.png" alt="" width="128" height="40"></h1>
+        <div class="dropdown">
+            <button id="langChange" class="btn btn-default" type="button" data-toggle="dropdown" aria-haspopup="true" role="button" aria-expanded="false"><i class="icon-lang-change"></i><span>Language</span></button>
+            <ul class="dropdown-menu dropdown-menu-right">
+                <li> <a id="langChangeEn" href="#" onclick="languageChange('en');return false;">English</a>
+                <a id="langChangeJa" href="#" onclick="languageChange('ja');return false;">日本語</a> </li>
+            </ul>
+        </div>
+    </section>
+    <input type="hidden" name="selectedLanguageLogin" value="" id="selectedLanguageLogin"/>
+    </form>
+</header>
+<div class="main-wrapper" id="server-error">
+    <section class="main-body" style="position:relative;">
+     
+         <article class="login-panel">
+             <div class="row">
+               <div class="col-md-7 col-sm-7 col-xs-12 login-branding"> <i class="icon-mywaseda"></i> </div>
+               <div class="col-md-5 col-sm-5 col-xs-12 text-center">
+                  <form id ="loginForm" method="post" action="../portal/view/portal-top-view" data-ajax="false" onsubmit="return valid();">
+                      <a href="javascript:toLogin();" class="btn btn-login" id="btnLogin">ログイン</a>
+                  </form>
+                </div>
+             </div>
+         </article>
+      
+      
+        <article>
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                 
+                 <form>
+                    
+                        <section class="info">
+
+                            <div class="info-panel">
+                            
+                                
+                                
+                                   <dl>
+                                   <a id="toDetailInfoId0" href="javascript:void(0)" onclick="toDetail('17','ja');return false;" rel="external" >
+
+                                     <dt class="title">
+                                     
+                                       <span class="important"><i class="icon-ic24_important"></i></span> <span class="new"><i class="icon-ic24_new"></i></span>
+                                     
+                                     <span class="title">【重要】MyWasedaなど各サービスのログイン方法（認証方式）変更について</span>
+                                     </dt>
+                                    <dd>
+                                    <span class="category">システム</span> <span class="date"><span custom-date='true'>2021/07/15</span></span>
+                                     <span class="community-name"></span>
+                                     </dd>
+                                </a>
+                                </dl>
+                                
+                                
+                                
+                                 <dl>
+                                 <a id="infoUrl1" href="https://wsdmoodle.waseda.jp/auth/saml2/login.php?wants=https%3A%2F%2Fwsdmoodle.waseda.jp%2F&amp;idp=fcc52c5d2e034b1803ea1932ae2678b0&amp;passive=off" rel="external" target="_blank" class="ui-btn">
+
+                                    <dt class="title">
+                                     
+                                       <span class="important"><i class="icon-ic24_important"></i></span> <span class="new"><i class="icon-ic24_new"></i></span>
+                                     
+                                     <span class="title">【重要】Waseda MoodleはMyWasedaにログインせず、こちら（「Waseda Moodle Login」）から行ってください。</span>
+                                     </dt>
+                                    <dd>
+                                    <span class="category">システム</span> <span class="date"><span custom-date='true'>2020/04/27</span></span>
+                                     <span class="community-name"></span>
+                                     </dd>
+                                  </a>
+                                   </dl>
+                                
+                                
+                                
+                                
+                                 <dl>
+                                 <a id="infoUrl2" href="https://coursereg.waseda.jp/portal/simpleportal.php?HID_P14=JA" rel="external" target="_blank" class="ui-btn">
+
+                                    <dt class="title">
+                                     
+                                     <span class="title">【重要】科目登録・成績照会はMyWasedaにログインせず、こちら（「成績照会・科目登録専用」）から行ってください。</span>
+                                     </dt>
+                                    <dd>
+                                    <span class="category">システム</span> <span class="date"><span custom-date='true'>2016/03/25</span></span>
+                                     <span class="community-name"></span>
+                                     </dd>
+                                  </a>
+                                   </dl>
+                                
+                                
+                                
+                                
+                                 <dl>
+                                 <a id="infoUrl3" href="http://www.waseda.jp/navi/services/system/sys_requirements.html" rel="external" target="_blank" class="ui-btn">
+
+                                    <dt class="title">
+                                     
+                                     <span class="title">情報企画部が提供する各種システムの検証済環境</span>
+                                     </dt>
+                                    <dd>
+                                    <span class="category">システム</span> <span class="date"><span custom-date='true'>2014/10/22</span></span>
+                                     <span class="community-name"></span>
+                                     </dd>
+                                  </a>
+                                   </dl>
+                                
+                                
+                                
+                                
+                                
+                                   <dl>
+                                   <a id="toDetailInfoId4" href="javascript:void(0)" onclick="toDetail('2','ja');return false;" rel="external" >
+
+                                     <dt class="title">
+                                     
+                                     <span class="title">気象状況悪化等に伴う本学の対応について</span>
+                                     </dt>
+                                    <dd>
+                                    <span class="category">システム</span> <span class="date"><span custom-date='true'>2019/11/13</span></span>
+                                     <span class="community-name"></span>
+                                     </dd>
+                                </a>
+                                </dl>
+                                
+                                
+                            </div>
+                        </section>
+                        
+                         <input type="hidden" name="infomation.id" value="" id="infoId"/>
+                         <input type="hidden" name="language" value="" id="lang"/>
+                      </form>
+                </div>
+            </div>
+        </article>
+        <div class="loginbanner">
+            <p>
+            
+            
+            
+                <a href="https://coursereg.waseda.jp/portal/simpleportal.php?HID_P14=JA" target="_blank">
+            
+                    <button class="banner" id="banner1">成績照会<br>科目登録専用</button></a>
+            <a href="https://wsdmoodle.waseda.jp/auth/saml2/login.php?wants=https%3A%2F%2Fwsdmoodle.waseda.jp%2F&idp=fcc52c5d2e034b1803ea1932ae2678b0&passive=off" target="_blank">
+              <button class="banner" id="banner4">Waseda Moodle<br>Login</button>
+            </a>
+            <a href="https://gmail.com/" target="_blank">
+            <button class="banner" id="banner6">Waseda Mail(Student)<br>Login</button></a>
+            <a href="https://outlook.office365.com/waseda.jp" target="_blank">
+            <button class="banner" id="banner7">Waseda Mail(Faculty)<br>Login</button></a>
+           		<a href="https://emergency-notice.waseda.jp/" target="_blank"><button class="banner" id="banner3">緊急時の<br>お知らせ</button></a>
+            
+
+				<a href="https://emergency-notice.waseda.jp/2019/11/blog-post.html" target="_blank"><button class="banner" id="banner2">災害時安否<br>確認フォーム</button></a>
+            </p>
+        </div>
+    </section>
+</div>
+ 
+   
+
+
+
+
+<script type="text/javascript">
+
+ 	$(document).ready(function(){
+
+ 		settingByBrowser();
+
+ 		var url = location.href;
+
+		
+		sessionStorage.setItem('running', true);
+
+		
+		window.addEventListener('beforeunload', function() {
+			sessionStorage.removeItem('running');
+		}, false);
+
+		if (url.indexOf("/error?errorType=") == -1){
+			if(typeof(sessionStorage.windowId) == "undefined") {
+
+				var winID = new Date().getTime();
+				sessionStorage.windowId=winID;
+				var loginUrl = "https://my.waseda.jp:443/" ;
+				var loginUrl_nonePort = "https://my.waseda.jp/" ;
+				var reqWinID = "null";
+
+				if (reqWinID != null && reqWinID != ''
+						&& url != loginUrl && url != loginUrl_nonePort){
+					
+					
+					if((url.indexOf('/application/edit/application-edit-preview') == -1)
+						&& (url.indexOf('/notice/edit/notice-edit-preview') == -1)) {
+					
+						var paramWinID = "";
+
+						if (url.indexOf("?") == -1){
+							paramWinID = "?subsessionWindowId=";
+
+						} else {
+							paramWinID = "&subsessionWindowId=";
+						}
+
+						$('modal-dialog').hide();
+						location.replace(url + paramWinID);
+					}
+				}
+
+			} else {
+				appendWindowId();
+			}
+		} else {
+			sessionStorage.removeItem('windowId');
+		}
+	});
+
+ 	window.onunload = function() {
+		if(typeof(sessionStorage.windowId) == "undefined") {
+			appendWindowId();
+		}
+ 	};
+
+ 	function settingByBrowser() {
+
+		var userAgent = window.navigator.userAgent.toLowerCase();
+
+		if (userAgent.indexOf('chrome') != -1) {
+			
+
+			
+			if (sessionStorage.getItem('running')) {
+				sessionStorage.removeItem('windowId');
+			}
+		}
+ 	}
+
+ 	function appendWindowId() {
+		$.each($('form'), function(index, value){
+			if( $(value).find("input[name='subsessionWindowId']").size() == 0) {
+				$(value).append("<input type='hidden' name='subsessionWindowId' value='" + sessionStorage.windowId + "'/>");
+			}
+		});
+ 	}
+
+</script>
+
+
+
+<footer>
+    <p>
+        
+        
+
+
+
+<script type="text/javascript">
+var DOWNLOAD_PATCH="/common/download/down-load-show!download";
+var DOWNLOAD_INLINE_PATCH="/common/download/down-load-show!downloadInline";
+$(document).ready(function(){
+    $(".top-bar-help").on('click',function(){
+    	
+      $(".top-bar-help").attr("href","");
+    });
+});
+</script>
+
+
+
+        Copyright (C) , Waseda University 2015-. All rights reserved.
+    </p>
+</footer>
+
+<div id="error"></div>
+<div id="button-dialog">
+	<div class="modal fade" id="rightmenu-modal-content" data-backdrop="static">
+		<div class="modal-dialog modal-sm">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">閉じる</span></button>
+					<h4 class="modal-title" id="rightmenu-modal-content-title" >確認</h4>
+				</div>
+				<div class="modal-body" id="rightmenu-modal-content-msg" >
+					<p>保存せずに終了してよろしいですか？</p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" id="rightmenu-modal-content-no" data-dismiss="modal" >いいえ</button>
+					<button type="button" class="btn btn-default" id="rightmenu-modal-content-yes" >はい</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+
+<div>
+	<div class="modal fade" id="load-process">
+		<div class="modal-dialog modal-sm">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title" id="process-title">送信しています</h4>
+				</div>
+				<div class="modal-body">
+					<p class="loading_p"><img src="/resource/images/others/loading_process.gif" /></p>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+    
+    <div>
+	<div class="modal fade" id="account_location_select_modal" data-backdrop="static">
+	  <div class="modal-dialog modal-sm">
+	  	<div class="modal-content">
+	  		<div class="modal-header">
+	  			<button onClick="window.open('about:blank','_self').close();"
+	  			        type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+	       		<h4 class="modal-title" id="account-select-title">アカウント選択</h4>
+	       		<h4 class="modal-title" id="location-select-title">箇所選択</h4>
+	     	</div>
+	     	<div class="modal-body">
+	     		<section class="modal-body-inner">
+	     			<section class="wizard-content">
+							<section class="mini-test-answer-state-list form-group">
+	     				<table>
+						<tr class="header desktop" id="account-name-title">
+							<th class="row"><section class="col-md-12 col-sm-12 col-xs-12">アカウント名</section></th>
+						</tr>
+						<tr class="header desktop" id="location-name-title">
+							<th class="row"><section class="col-md-12 col-sm-12 col-xs-12">箇所名</section></th>
+						</tr>
+						<tr>
+						<table id="account_location_list">
+						</table>
+						</tr>
+					</table>
+					</section>
+					<section class="clearfix">
+					<div class="row">
+						<div class="col-xs-12 text-right">
+							<button onClick="window.open('about:blank','_self').close();"
+							        type="button" id="account_location_select_cancel_button" class="btn btn-primary btn-cancel"
+                                    data-dismiss="modal">
+                                    キャンセル
+                            </button>
+						</div>
+					</div>
+				</section>
+	         	</section>
+	   			</section>
+	   		</div>
+	     	<div class="modal-footer footer-bg"> &nbsp; </div>
+	   	</div>
+	 	</div>
+	</div>
+	</div>
+	
+	<section class="account_location_select_list">
+       	<script id="rowAccountLocation" class="hidden" type="text/x-jquery-tmpl">
+			<tr>
+				<th class="row">
+					<section class="col-md-12 col-sm-12 col-xs-12" ref_item="${itemId}" id="account-select-item" style="cursor:pointer;">
+						<section class="pull-left" style="word-break: break-all;">
+							<span>${itemName}</span>
+						</section>
+					</section>
+				</th>
+			</tr>
+		</script>
+	</section>
+<div class="clearfix hidden" id="network-error-div">
+    <div class="col-sm-12">
+        <div class="alert alert-danger" role="alert">
+            <span class="label label-danger">エラー</span>
+            ネットワークをご確認ください。
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var networkError_400 = 'データフォーマットが間違っています。';
+    var networkError_401 = '認証に失敗しました。';
+    var networkError_408 = '時間が過ぎましたので、再度ログインしてください。';
+    var networkError_0 = '<br/>サーバーにアクセスできません。<br/>ネットワークをご確認ください。';
+</script>
+
+<script type="text/javascript" >
+
+	var clearSessionURL = '';
+	var FlagTempPass = false;
+	var ObjTemp = false;
+	$(document).ready( function(){
+		$('body').on('click','#account-select-item', function(e) {
+			if (menuTopObj != null) {
+				$(menuTopObj).find("#"+e.currentTarget.getAttribute('ref_item')).children("a").click();
+			}
+			else {
+				$('#' + e.currentTarget.getAttribute('ref_item')).children("a").click();
+			}
+		});
+
+		$('body').on('shown.bs.modal', '#account_location_select_modal', function () {
+			$('#account_location_select_cancel_button').focus();
+		});
+		genBreadCrumpCLick();
+	     $('#rightmenu-modal-content-no').on('click',function(e){
+	    	 addLog("click", logType, "", "いいえ","");
+	    });
+	     document.body.addEventListener('drop', function(e) {
+	         e.preventDefault();
+	     }, false);
+
+	     document.body.addEventListener('dragover', function(e) {
+	         e.preventDefault();
+	     }, false);
+
+	     document.body.addEventListener('dragenter', function(e) {
+	         e.preventDefault();
+	     }, false);
+	  	orderError();
+		if(typeof back == "undefined") {
+	    	window.back = function () {
+	    		var itemBreadcrumb = $('.breadcrumb>li:last-child').prev();
+				  if(typeof itemBreadcrumb !== "undefined"){
+					  var linkClick = $(itemBreadcrumb).find('a:first');
+				  	  $(linkClick).trigger('click');
+				      stopEvent(event);
+				  }
+	    	}
+		}
+	});
+
+	$('body').on('shown.bs.modal', '.modal', function () {
+	    $('button#rightmenu-modal-content-no').focus();
+	});
+
+	
+	function callAjax() {
+	    if(clearSessionURL.trim() == '') {
+			
+			
+			var diff = 'null';
+			if(diff == '1'){
+				
+				clearSessionURL = fullPath + "/portal/view/portal-top-view!selServiceMenu";
+			} else {
+				
+				clearSessionURL = fullPath + "/community/view/community-view-for-view!selServiceMenu";
+			}
+			
+	    } else {
+	        clearSessionURL = fullPath + clearSessionURL;
+	    }
+
+		var flag = false;
+		$
+		.ajax({
+			type : "POST",
+			url : clearSessionURL,
+			scriptCharSet : "UTF-8",
+			data : {
+
+			},
+			success : function(data) {
+					flag = true;
+			},
+			error : function() {
+				
+				flag = true;
+				return;
+			},
+			complete : function() {
+				return;
+			},
+			async : false
+		});
+		return flag;
+	}
+
+	
+	function genBreadCrumpCLick() {
+
+		$("ol.breadcrumb a").each( function (index) {
+			if($(this).attr('onclick') !== undefined) {
+				var attr = $(this).attr('onclick');
+				$(this).attr('onclick', 'setEventToWindowObj(event);if(breadcrmpClick(this)){ ' + attr + ' } else { return false; }')
+			} else {
+				$(this).attr('onclick', 'setEventToWindowObj(event);return breadcrmpClick(this);');
+			}
+		});
+	}
+
+	function breadcrmpClick(obj) {
+		ObjTemp = obj;
+		if(FlagTempPass) {
+			return breadcrmpClickRun();
+		} else {
+			var flag = true;
+			if (typeof onMenuClick !== 'undefined' && $.isFunction(onMenuClick)) {
+			    flag = onMenuClick();
+			}
+			if(flag) {
+				breadcrmpClickYes()
+			} else {
+				offMenu("breadcrmpClickYes();");
+			}
+		}
+	}
+
+	function breadcrmpClickYes() {
+		FlagTempPass = true;
+		$(ObjTemp).click();
+	}
+
+	function breadcrmpClickRun() {
+		clickLogAdd();
+		var flag = true;
+		if (typeof onBreadCrumpClick !== 'undefined' && $.isFunction(onBreadCrumpClick)) {
+		    flag = onBreadCrumpClick();
+		}
+		if(flag) {
+			return callAjax();
+		} else {
+			return true;
+		}
+	}
+
+	function offMenu(str) {
+		clickLogAdd();
+		$("body").click();
+		setTimeout(function() {
+			$("#rightmenu-modal-content-yes").attr('onclick', '$.windowOnBeforeUnloadIgnore=true;$("#rightmenu-modal-content").modal("hide");' + str);
+			$("#rightmenu-modal-content").modal("show");
+		}, 1500);
+	}
+
+	(function($) {
+		$.loadProcess = function(value,title){
+			$("#process-tile").text(title);
+			$("#load-process").addClass("in");
+			$("#load-process .modal-dialog").removeAttr("style");
+			$("#load-process .modal-dialog .modal-body").removeAttr("style");
+			$("#load-process .modal-dialog .modal-body").css({
+				  'text-align': 'center'
+			});
+			$("#load-process .modal-dialog").css({
+				 top: "25%",
+		         width: "25%"
+			});
+			if(value=='show'){
+			   $("#load-process").show();
+			}else{
+			   $("#load-process").show();
+			}
+
+		};
+		$.success = function(title,message,timeOut){
+			$("#process-tile").text(title);
+			$("#load-process").addClass("in");
+			$("#load-process .modal-dialog").removeAttr("style");
+			$("#load-process .modal-dialog .modal-body").removeAttr("style");
+			$("#load-process .modal-dialog .modal-body p").text(message);
+
+			$("#load-process .modal-dialog .modal-body").css({
+				  'text-align': 'center'
+			});
+			$("#load-process .modal-dialog").css({
+				 top: "25%",
+		         width: "25%"
+			});
+			$("#load-process").fadeIn().fadeOut(timeOut);
+
+		};
+		$.loadingProcess = function(){
+			$("#load-process .modal-dialog .modal-body p").css({
+				  'text-align': 'center', 'padding':'2rem 0'
+			});
+			$("#load-process .modal-body p").html('<img src="/resource/images/others/loading_process.gif" alt="">')
+			$('#load-process').modal({backdrop:"static"});
+		};
+		$.loadingSuccess = function(message){
+			$("#load-process .modal-dialog .modal-body p").css({
+				  'text-align': 'center', 'padding':'2rem 0'
+			});
+			$("#load-process .modal-body p").find("img").fadeOut(function(){
+			    if (message) {
+				    $(this).parent().text(message);
+				} else {
+				    $(this).parent().text('完了しました。');
+				}
+			})
+			setTimeout(function(){
+				$("#load-process").modal("hide");
+			},1000)
+		};
+
+	})(jQuery);
+	function orderError() {
+
+		var box = $('[error-box-order="error-box"]');
+		box.addClass('hidden');
+		if (box.length > 0
+				&& typeof errorItemOrder != "undefined"
+				&& typeof errorItemOrder != "string" && errorItemOrder != null) {
+			var errorBox = box.find('[error-item]');
+
+			if (errorItemOrder.length >= errorBox.length) {
+				var arrayItem = [];
+
+				for (var i = 0; i < errorItemOrder.length; i++) {
+					var obj = null;
+					for (var j = 0; j < errorBox.length; j++) {
+						var item = $(errorBox[j]);
+						if (item.attr('error-item') == errorItemOrder[i]) {
+							obj = item;
+							break;
+						}
+					}
+					if (obj != null) {
+						obj.remove();
+					}
+					arrayItem[i] = obj;
+				}
+				for (var i = 0; i < arrayItem.length; i++) {
+					box.append(arrayItem[i]);
+				}
+			}
+		}
+		box.removeClass('hidden');
+	}
+</script>
+
+<!-- r.8e3b9ad1 -->
+ 
+</body>
+</html>
